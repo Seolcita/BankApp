@@ -81,6 +81,58 @@ const displayMovements = movements => {
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
+
+  ///////// Euro to USD /////////
+  const eurToUsd = 1.1;
+  const usd = movements.map(mov => mov * eurToUsd);
+  // console.log(usd);
+
+  ///////// Map - movement /////////
+  const movementsDescription = movements.map(
+    (mov, i) =>
+      `Movement: ${i + 1}: You ${mov > 0 ? 'deposit' : 'withdrew'} ${Math.abs(
+        mov
+      )}`
+  );
+  // console.log(movementsDescription);
+
+  ///////// Map - creating username /////////
+
+  /*
+  // #1 - Manually use user name
+  const user = 'Steven Thomas Williams'; // from Steven Thomas Williams to stw
+  const userName = user
+    .toLowerCase() // steven thomas williams
+    .split(' ') // ['steven', 'thomas', 'williams']
+    .map(name => name[0]) // ['s', 't', 'w']
+    .join(''); // stw
+  console.log(userName);
+
+  // #2 - Making function 
+  const createUsernames = userName =>
+    userName
+      .toLowerCase() // steven thomas williams
+      .split(' ') // ['steven', 'thomas', 'williams']
+      .map(name => name[0]) // ['s', 't', 'w']
+      .join(''); // stw
+  console.log(createUsernames('Steven Thomas Williams'));
+  */
 };
 
 displayMovements(account1.movements);
+
+// #3 - Use array & function
+
+const createUsernames = accs => {
+  // console.log(accs);
+  accs.forEach(acc => {
+    // console.log(acc.owner);
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
