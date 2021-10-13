@@ -75,7 +75,7 @@ const displayMovements = movements => {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}</div>
+        <div class="movements__value">${mov}€</div>
       </div>
     `;
 
@@ -172,7 +172,38 @@ createUsernames(accounts);
 // Displaying current balance
 const calcDisplayBalance = movements => {
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance} €`;
 };
 
 calcDisplayBalance(account1.movements);
+
+// Displaying summary (deposits, withdrawals, interests)
+
+const calcDisplaySummary = movements => {
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  // console.log(income);
+  labelSumIn.textContent = `${income}€`;
+
+  const outcome = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  // console.log(outcome);
+  labelSumOut.textContent = `${Math.abs(outcome)}€`;
+
+  const interestRate = 0.012;
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(mov => mov * interestRate)
+    .filter(
+      (int, i, arr) =>
+        // console.log(arr);
+        // return int >= 1;
+        int >= 1
+    )
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
