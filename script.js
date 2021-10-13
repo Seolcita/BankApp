@@ -98,7 +98,7 @@ const displayMovements = movements => {
 
   ///////// Map - creating username /////////
 
-  /*
+  /* 
   // #1 - Manually use user name
   const user = 'Steven Thomas Williams'; // from Steven Thomas Williams to stw
   const userName = user
