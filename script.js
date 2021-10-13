@@ -117,12 +117,45 @@ const displayMovements = movements => {
       .join(''); // stw
   console.log(createUsernames('Steven Thomas Williams'));
   */
+
+  ///////// Filter - deposits /////////
+  // return new array called deposits with only mov is greater than 0
+  const deposits = movements.filter(mov => mov > 0);
+  console.log(deposits);
+
+  // Same result as above but using for loop
+  //const depositsFor = [];
+  //for (const mov of movements) if (mov > 0) depositsFor.push(mov);
+  //console.log(depositsFor);
+
+  ///////// Filter - withdrawals /////////
+  const withdrawals = movements.filter(mov => mov < 0);
+  console.log(withdrawals);
+
+  ///////// Reduce - balance /////////
+  const balance = movements.reduce((acc, curr, i) => {
+    console.log(`Iteration: ${i}: ${acc}`);
+    return acc + curr;
+  }, 0); // 0 is initial value
+  console.log(balance);
+
+  // Same result as above but using for loop
+  //let balance2 = 0;
+  //for (const mov of movements) balance2 += mov;
+  //console.log(balance2);
+
+  ///////// Reduce - Finding Max value /////////
+  const max = movements.reduce((acc, curr) => {
+    let maxValue = acc;
+    return acc < curr ? (maxValue = curr) : (maxValue = acc);
+  }, movements[0]);
+  console.log(max);
+  //max(account1.movements)
 };
 
-displayMovements(account1.movements);
+displayMovements(account2.movements);
 
 // #3 - Use array & function
-
 const createUsernames = accs => {
   // console.log(accs);
   accs.forEach(acc => {
@@ -134,5 +167,12 @@ const createUsernames = accs => {
       .join('');
   });
 };
-
 createUsernames(accounts);
+
+// Displaying current balance
+const calcDisplayBalance = movements => {
+  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcDisplayBalance(account1.movements);
