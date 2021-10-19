@@ -65,10 +65,12 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 
 // Display Movements
-const displayMovements = movements => {
+const displayMovements = (movements, sort = false) => {
   containerMovements.innerHTML = '';
 
-  movements.forEach((mov, i) => {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -82,7 +84,7 @@ const displayMovements = movements => {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 
-  // --------------- Map & Filter & Reduce & Find ------------------------
+  // --------------- Map & Filter & Reduce & Find & Sort------------------------
   ///////// Euro to USD /////////
   // const eurToUsd = 1.1;
   // const usd = movements.map(mov => mov * eurToUsd);
@@ -162,7 +164,27 @@ const displayMovements = movements => {
   // const accountInfo = accounts.find(acc => acc.owner === 'Jessica Davis');
   // console.log(accountInfo); // Returns matched one object
 
-  //------------------  END (Map & Filter & Reduce & Find) -------------------
+  // Sort - Ascending
+  // return value < 0, A, B (keep order)
+  // return value > 0, B, A (switch order)
+  // movements.sort((a, b) => {
+  //   if (a > b) return 1;  // switch order
+  //   if (a < b) return -1; // keep order
+  // });
+  // Same result as above
+  //movements.sort((a, b) => a - b);
+  //console.log(movements);
+
+  // Sort - descending
+  // movements.sort((a, b) => {
+  //   if (a > b) return -1;
+  //   if (a < b) return 1;
+  // });
+  // Same result as above
+  //movements.sort((a, b) => b - a);
+  //console.log(movements);
+
+  //------------------  END (Map & Filter & Reduce & Find & Sort) -------------------
 };
 
 //displayMovements(account2.movements);
@@ -300,3 +322,75 @@ btnTransfer.addEventListener('click', e => {
 });
 
 console.log(accounts);
+
+// Loan
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+  }
+
+  inputLoanAmount.value = '';
+});
+
+// Close account
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const currentAccountIdx = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(currentAccountIdx);
+    accounts.splice(currentAccountIdx, 1);
+    console.log(accounts);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  } else {
+    console.log('check');
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
+// Bank Balance
+// const accountMovements = accounts.map(acc => acc.movements);
+// console.log(accountMovements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+// const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+// console.log(overallBalance);
+
+// Same result as above using chaining method
+// const overallBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overallBalance);
+
+// Same result as above using flatMap
+const overallBalance = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overallBalance);
+
+// Sort - Display movements ascending
+// (Our application start from bottom so it looks descending)
+
+let sorted = false; // To solve the below problem, set state
+
+btnSort.addEventListener('click', e => {
+  e.preventDefault();
+  // Below function has an issue
+  // If I click 'Sort' button again, it won't go back original display
+  // displayMovements(currentAccount.movements, true);
+  displayMovements(currentAccount.movements, !sorted); // working like toggle
+  sorted = !sorted;
+});
