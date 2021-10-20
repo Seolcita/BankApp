@@ -394,3 +394,60 @@ btnSort.addEventListener('click', e => {
   displayMovements(currentAccount.movements, !sorted); // working like toggle
   sorted = !sorted;
 });
+
+/* -------------------------- Practice Array Methods --------------------------
+
+// Number of deposit over $1000
+// #1 - with filter()
+// const bankDeposit1000Filter = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov >= 1000).length;
+// console.log(bankDeposit1000Filter);
+
+// #2 - with reduce()
+// const bankDeposit1000Reduce = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((count, cur) => (cur >= 1000 ? ++count : count), 0);
+// console.log(bankDeposit1000Reduce);
+
+// reduce() with object
+// const sums = accounts
+//   .flatMap(mov => mov.movements)
+//   .reduce(
+//     (sums, cur) => {
+//       cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur);
+//       return sums;
+//     },
+//     { deposits: 0, withdrawals: 0 }
+//   );
+// console.log(sums);
+
+// Same result as above
+// const { deposits, withdrawals } = accounts
+//   .flatMap(mov => mov.movements)
+//   .reduce(
+//     (sums, cur) => {
+//       sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+//       return sums;
+//     },
+//     { deposits: 0, withdrawals: 0 }
+//   );
+// console.log(deposits, withdrawals);
+*/
+
+// Capitalize the title with exception
+// const convertTitleCase = title => {
+//   const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with'];
+
+//   const titleCase = title
+//     .toLowerCase()
+//     .split(' ')
+//     .map(word =>
+//       exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+//     )
+//     .join(' ');
+
+//   return titleCase;
+// };
+
+// console.log(convertTitleCase('My name is SEOL Hi Kim'));
